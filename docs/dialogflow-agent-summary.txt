@@ -1,0 +1,286 @@
+================================================================
+ DIALOGFLOW AGENT SUMMARY — QuantEateryAgent.zip
+================================================================
+
+AGENT SETTINGS
+----------------------------------------------------------------
+Display Name        : food-delivery-chatbot-quicky
+Description          : quicky-food-delivery-chatbot
+Language              : en
+Default Timezone      : Asia/Almaty
+ML Min Confidence     : 0.3
+Spell Correction      : disabled
+Sentiment Analysis    : disabled
+Private Agent         : yes
+
+WEBHOOK SETTINGS
+----------------------------------------------------------------
+Enabled (available)   : true
+URL                   : [YOUR_NGROK_DEV_URL]
+Auth username         : (none set)
+Custom headers        : (none set)
+Use webhook for domains only : false
+⚠ Note: this is a free-tier ngrok URL — it expires/rotates on ngrok
+  restart, so this value will go stale. Redact before sharing the
+  zip publicly if you re-export later (also strip "secondaryKey"
+  from agent.json).
+
+================================================================
+ ENTITIES
+================================================================
+
+Entity: food-item
+  Type            : Custom (developer-defined)
+  Enum mode       : No (isEnum: false → synonyms map to a canonical value)
+  Fuzzy matching  : Enabled (allowFuzzyExtraction: true)
+  Overridable     : Yes
+
+  Values & synonyms:
+    - Butter Chicken       → butterchicken, chicken butter masala, chicken makhani,
+                              chicken gravy, chicken masala
+    - Chicken Biryani      → biryani, dum biryani, chicken rice
+    - Paneer Butter Masala → pbm, paneer makhani, butter paneer, paneer gravy,
+                              paneer masala
+    - Masala Dosa          → dosa, masala dose, dose, aloo masala dosa
+    - Chole Bhature        → chhole bhature, bhature, chhola bhatura, bhatoora
+    - Dal Makhani          → black dal, butter daal, makhani daal, daal
+    - Palak Paneer         → spinach paneer, paneer palak
+    - Veg Pulao            → veg pulaav, veg palav, pulao, rice pulao,
+                              vegetable pulao, pulav
+    - Garlic Naan          → naan, maida roti, butter garlic naan,
+                              garlic butter naan, roti naan
+
+System entities used (not custom, built into Dialogflow):
+    - @sys.number   → used as "number" param (order.add) and "order_id" param
+                       (track.order - context: ongoing-tracking)
+
+================================================================
+ INTENTS
+================================================================
+
+--------------------------------------------------------------
+Intent: Default Welcome Intent
+--------------------------------------------------------------
+Type                 : System default (triggered by WELCOME event)
+Input context        : none
+Output context       : none
+Webhook fulfillment  : No
+Training phrases     : (event-triggered, not phrase-matched)
+Text responses (random pick):
+    - "Hello, How can I help you? You can say "New Order" or "Track Order""
+    - "Good day! What can I do for you today? You can say "New Order" or "Track Order""
+    - "Greetings! How can I assist? You can say "New Order" or "Track Order""
+
+--------------------------------------------------------------
+Intent: Default Fallback Intent
+--------------------------------------------------------------
+Type                 : System default (catch-all, no match)
+Input context        : none
+Output context       : none
+Webhook fulfillment  : No
+Training phrases     : (fallback — matches anything not caught by other intents)
+Text response:
+    - "I didn't understand. You can say 'New Order' or 'Track Order'. Also, in a
+       new order, please mention only items from our available menu: Butter Chicken, Chicken
+    Biryani, Paneer Butter Masala, Masala Dosa, Chole Bhature, Dal Makhani,
+    Palak Paneer, Veg Pulao, Garlic Naan. Also specify a quantity for each item for example:
+       "One plate Biryani and 2 Masala Dosa"
+
+--------------------------------------------------------------
+Intent: new.order - context: ongoing-order
+--------------------------------------------------------------
+Input context        : none
+Output context       : ongoing-order (lifespan: 5)
+Webhook fulfillment  : Yes
+Parameters           : none
+Training phrases:
+    - Generate a new order
+    - Create a brand-new order
+    - Place new order
+    - new order
+Text responses (random pick):
+    - "Ok, starting a new order. You can say things like "I want one Butter
+       Chicken and one garlic naan". Make sure to specify a quantity for every
+       food item! Also, we have only the following items on our menu: Butter
+       Chicken, Chicken Biryani, Paneer Butter Masala, Masala Dosa, Chole
+       Bhature, Dal Makhani, Palak Paneer, Veg Pulao, Garlic Naan"
+    - "Starting new order. Specify food items and quantities. For example, you
+       can say, "I would like to order one paneer butter masala and 1 veg
+       pulao. Also, we have only the following items on our menu: Butter
+       Chicken, Chicken Biryani, Paneer Butter Masala, Masala Dosa, Chole
+       Bhature, Dal Makhani, Palak Paneer, Veg Pulao, Garlic Naan"
+
+--------------------------------------------------------------
+Intent: order.add - context: ongoing-order
+--------------------------------------------------------------
+Input context        : ongoing-order
+Output context       : ongoing-order (lifespan: 5)
+Webhook fulfillment  : Yes
+Parameters:
+    - number     | @sys.number  | required | list: yes
+        Reprompt: "Please clearly specify food quantity (e.g., I want one
+                   chicken biryani and one paneer butter masala)"
+    - food-item  | @food-item   | required | list: yes
+        Reprompt: "Please specify food from the list: Butter Chicken, Chicken
+                   Biryani, Paneer Butter Masala, Masala Dosa, Chole Bhature,
+                   Dal Makhani, Palak Paneer, Veg Pulao, Garlic Naan"
+Training phrases (15):
+    - Oh yes, add one Masala Dosa as well
+    - 3 Chicken Biryani
+    - 2 Garlic Naan and ok let's add one Chicken Biryani too
+    - Additionally, I'd like 2 Veg Pulao
+    - Also, please give me 2 Veg Pulao
+    - Moreover, include 2 Veg Pulao
+    - In addition, add 1 Dal Makhani and 2 Garlic Naan
+    - I want 1 Garlic Naan, 2 Chole Bhature and one Masala Dosa, do it fast plz
+    - I'll take 2 orders of Chole Bhature, one Garlic Naan, and 1 Veg Pulao,
+      if you don't mind
+    - Can I get 2 plates of Paneer Butter Masala, along with one Garlic Naan
+      and 1 Veg Pulao?
+    - 3 Chicken Biryani, 2 Garlic Naan, 1 Masala Dosa
+    - Please prepare 2 portions of Butter Chicken, along with one Garlic Naan
+      and 1 Veg Pulao for me
+    - Can you please get me two servings of Butter Chicken, one Garlic Naan,
+      and one Veg Pulao?
+    - I'd like to order two Butter Chicken, one Garlic Naan, and 3 Veg Pulao,
+      please.
+    - Give me 2 plates of Butter Chicken, one Garlic Naan
+Text response:
+    - "Anything else?"
+
+--------------------------------------------------------------
+Intent: order.remove - context: ongoing-order
+--------------------------------------------------------------
+Input context        : ongoing-order
+Output context       : ongoing-order (lifespan: 5)
+Webhook fulfillment  : Yes
+Parameters:
+    - food-item  | @food-item | required | list: yes
+        Reprompt: "Specify which item(s) to remove (e.g., Can you remove Veg
+                   Pulao?)"
+Training phrases (23):
+    - Can you remove Veg Pulao?
+    - Remove Chicken Biryani from my order.
+    - I don't want Paneer Butter Masala.
+    - Hey, please get rid of Masala Dosa and Garlic Naan.
+    - Delete Chole Bhature from my order.
+    - Please take the Chicken Biryani off my order.
+    - I would like to remove the Chicken Biryani from my order.
+    - Kindly exclude the Masala Dosa from my order.
+    - I no longer want the Masala Dosa in my order. Please remove it.
+    - I'd like to exclude Butter Chicken and Garlic Naan from my order.
+    - Exclude Garlic Naan from my order.
+    - I don't want Palak Paneer anymore.
+    - Please cancel my Masala Dosa.
+    - I changed my mind about the Chicken Biryani.
+    - Remove the Dal Makhani.
+    - Take out the Chole Bhature.
+    - Delete Veg Pulao.
+    - Remove the Paneer Butter Masala, please.
+    - Cancel my Butter Chicken.
+    - I don't need Garlic Naan anymore.
+    - Take Palak Paneer off my order.
+    - Please remove Dal Makhani from my order.
+    - Kindly take Butter Chicken and Garlic Naan off my order.
+    - No Butter Chicken and Garlic Naan in my order. Please remove them.
+Text response (uses $food-item placeholder, filled at runtime):
+    - "$food-item removed."
+
+--------------------------------------------------------------
+Intent: order.complete - context: ongoing-order
+--------------------------------------------------------------
+Input context        : ongoing-order
+Output context       : none (contexts cleared)
+Webhook fulfillment  : Yes
+Parameters           : none
+Training phrases (12):
+    - I'm fine
+    - That's all for now
+    - Not now
+    - Nothing
+    - Thank you very much
+    - No thanks
+    - No
+    - That's it
+    - Done
+    - Place an order
+    - Done ordering it
+    - That's all I needed
+    - Nope
+Text response (fallback if webhook fails):
+    - "Awesome! Your order is placed and your order id is #"
+
+--------------------------------------------------------------
+Intent: track.order
+--------------------------------------------------------------
+Input context        : none
+Output context       : ongoing-tracking (lifespan: 5)
+Webhook fulfillment  : No
+Parameters           : none
+Training phrases (7):
+    - where has my package reached
+    - I want to know where my order is
+    - check my order
+    - where is my order
+    - track existing order
+    - track order
+    - check the status of my order
+Text responses (random pick):
+    - "Sure! Please enter your order ID."
+    - "Definitely. What is your order id?"
+    - "I'd be happy to help. What's your order ID?"
+    - "Please type your order ID."
+    - "I'd be glad to check. What's your order ID?"
+
+--------------------------------------------------------------
+Intent: track.order - context: ongoing-tracking
+--------------------------------------------------------------
+Input context        : ongoing-tracking
+Output context       : ongoing-tracking (lifespan: 5)
+Webhook fulfillment  : Yes
+Parameters:
+    - order_id  | @sys.number | NOT required | list: no
+        (no reprompt configured — not required, so Dialogflow won't force a
+        retry if this isn't captured)
+Training phrases (10):
+    - 345
+    - 123
+    - 7890
+    - here is my order id # 341
+    - id is 453
+    - here is my order number 675
+    - here you go: 123
+    - here it is - 63321
+    - how about 40?
+    - how about 32
+Text response  : (none — response comes entirely from the webhook)
+
+================================================================
+ CONTEXT FLOW SUMMARY
+================================================================
+
+new.order   ────────► sets output: ongoing-order (lifespan 5)
+order.add   (needs: ongoing-order) ────────► sets output: ongoing-order (lifespan 5)
+order.remove(needs: ongoing-order) ────────► sets output: ongoing-order (lifespan 5)
+order.complete(needs: ongoing-order) ──────► clears contexts
+
+track.order ────────► sets output: ongoing-tracking (lifespan 5)
+track.order - context: ongoing-tracking (needs: ongoing-tracking)
+            ────────► sets output: ongoing-tracking (lifespan 5)
+
+================================================================
+ WEBHOOK-ENABLED INTENTS (calls your FastAPI backend)
+================================================================
+  ✔ new.order - context: ongoing-order
+  ✔ order.add - context: ongoing-order
+  ✔ order.remove - context: ongoing-order
+  ✔ order.complete - context: ongoing-order
+  ✔ track.order - context: ongoing-tracking
+  ✘ Default Welcome Intent        (static response only)
+  ✘ Default Fallback Intent       (static response only)
+  ✘ track.order                   (static response only, just asks for ID)
+
+Note: main.py's intent_handler_dict only maps 5 intents — matches exactly
+the 5 webhook-enabled intents above. Welcome/Fallback/track.order (the
+"ask for ID" step) are correctly left out since Dialogflow answers those
+without hitting your backend.
