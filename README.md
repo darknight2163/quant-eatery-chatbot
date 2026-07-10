@@ -5,7 +5,7 @@ Quicky is a conversational food-ordering assistant for a fictional restaurant, *
 **Stack:** Dialogflow ES (NLU) → FastAPI (Python backend) → SQLite → HTML/CSS/JS website
 
 ![Demo](docs/demo.gif)
-*(10-second walkthrough: placing an order and tracking it)*
+*(walkthrough: placing an order and tracking it)*
 
 ---
 
@@ -108,7 +108,7 @@ If you'd rather build the agent yourself (recommended if you're learning Dialogf
 3. Set up all the settings for each intent, entity, and webhook exactly as described in [`docs/dialogflow-agent-summary.txt`](docs/dialogflow-agent-summary.txt) — see the clip below for how input/output contexts and other params are saved per intent.
 4. Enable webhook fulfillment for each intent and paste the ngrok URL printed when you run `main.py` into **Fulfillment → Webhook**.
 
-![This is how a sample intent will look like](docs/screenshots/sample-intent.gif)
+![This is how a sample intent will look like](docs/sample-intent.gif)
 *(Example: Sample `order.add - context: ongoing-order` intent with input, output context `ongoing-order` and required parameters)*
 
 ---
