@@ -1,4 +1,4 @@
-# Quicky — Food Ordering Chatbot (Dialogflow ES + FastAPI)
+# Quicky : Food Ordering Chatbot (Dialogflow ES + FastAPI)
 
 Quicky is a conversational food-ordering assistant for a fictional restaurant, **Quant Eatery**. It handles placing new orders (add/remove items, complete order) and tracking existing orders by order ID, entirely through natural language.
 
@@ -11,10 +11,10 @@ Quicky is a conversational food-ordering assistant for a fictional restaurant, *
 
 ## Features
 
-- **New Order** — add multiple food items with quantities in one sentence ("2 pizzas and 1 mango lassi")
-- **Modify Order** — add or remove items mid-conversation before checkout
-- **Complete Order** — order is saved to the database and an order ID is returned
-- **Track Order** — check delivery status using an order ID
+- **New Order** : add multiple food items with quantities in one sentence ("2 pizzas and 1 mango lassi")
+- **Modify Order** : add or remove items mid-conversation before checkout
+- **Complete Order** : order is saved to the database and an order ID is returned
+- **Track Order** : check delivery status using an order ID
 - Session-aware conversation using Dialogflow contexts + a server-side in-progress order buffer
 
 ---
@@ -37,7 +37,7 @@ Quicky is a conversational food-ordering assistant for a fictional restaurant, *
   - order_tracking
 ```
 
-**Why Dialogflow ES over Rasa/a raw LLM?** This is a structured-action problem (order food, track order), not an open-ended generation problem — Dialogflow's intent/entity model plus built-in hosting and integrations got this to a working demo faster than self-hosting an NLU pipeline or wiring up an LLM for something it isn't needed for.
+**Why Dialogflow ES over Rasa/a raw LLM?** This is a structured-action problem (order food, track order), not an open-ended generation problem, Dialogflow's intent/entity model plus built-in hosting and integrations got this to a working demo faster than self-hosting an NLU pipeline or wiring up an LLM for something it isn't needed for.
 
 ---
 
@@ -87,7 +87,7 @@ This initializes the SQLite database (first run only) and opens an ngrok tunnel,
 
 ### 4. Connect Dialogflow
 
-You have two options here — pick whichever suits you:
+You have two options here, pick whichever suits you:
 
 #### Option A: Import the pre-built agent (fastest)
 A ready-to-import agent export is included at [`dialogflow-agent/QuantEateryAgent.zip`](dialogflow-agent/QuantEateryAgent.zip), with all intents, entities, and contexts already configured.
@@ -146,7 +146,7 @@ Bot:  The order status for order id: 260710143210 is: in transit
 
 - In-progress orders are stored in an in-memory Python dict, so state is lost on server restart and won't scale across multiple backend instances.
 - ngrok's free tier URL changes on every restart, requiring the Dialogflow webhook URL to be updated manually.
-- No payment integration — order total is quoted for pay-on-delivery only.
+- No payment integration, order total is quoted for pay-on-delivery only.
 - `order_id` is generated from a timestamp (second precision), so two orders placed in the same second could theoretically collide.
 
 ## Roadmap
@@ -165,4 +165,4 @@ This project was built to learn Dialogflow ES end-to-end: intents, entities, con
 
 ## License
 
-MIT - see [LICENSE](LICENSE) for details.
+MIT : see [LICENSE](LICENSE) for details.
