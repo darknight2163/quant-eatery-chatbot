@@ -90,7 +90,7 @@ This initializes the SQLite database (first run only) and opens an ngrok tunnel,
 You have two options here, pick whichever suits you:
 
 #### Option A: Import the pre-built agent (fastest)
-A ready-to-import agent export is included at [`dialogflow-agent/QuantEateryAgent.zip`](dialogflow-agent/QuantEateryAgent.zip), with all intents, entities, and contexts already configured.
+A ready-to-import agent export is included at [`dialogflow_agent/QuantEateryAgent.zip`](dialogflow_agent/QuantEateryAgent.zip), with all intents, entities, and contexts already configured.
 
 1. Go to the [Dialogflow ES Console](https://dialogflow.cloud.google.com/) → create a new agent.
 2. Open **Settings (⚙️) → Export and Import → Import From Zip**.
