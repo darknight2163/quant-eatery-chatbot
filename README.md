@@ -97,19 +97,19 @@ A ready-to-import agent export is included at [`dialogflow-agent/QuantEateryAgen
 3. Upload `QuantEateryAgent.zip` and confirm (this overwrites the new agent with the imported one).
 4. Enable webhook fulfillment under **Fulfillment** and paste in the ngrok URL printed when you run `main.py`.
 
-![Dialogflow import steps](docs/dialogflow-import.gif)
+![Dialogflow import steps](docs/dialogflow-import.jpg)
 *(Settings → Export and Import → Import From Zip)*
 
 #### Option B: Manual setup
 If you'd rather build the agent yourself (recommended if you're learning Dialogflow, since this is what I did first):
 
-1. Create a Dialogflow ES agent and define the intents: `new.order`, `order.add`, `order.remove`, `order.complete`, `track.order`.
-2. Add the `food-item` custom entity (with synonyms) and use the system entities `sys.number` and the custom `order-id` for quantities/tracking.
-3. Set up the `ongoing-order` and `ongoing-tracking` contexts as described in [`docs/STUDY_NOTES.md`](docs/STUDY_NOTES.md) — see the screenshots below for how input/output contexts and lifespans are configured per intent.
+1. Create a Dialogflow ES agent and define the intents: `Default Welcome Intent`, `Default Fallback Intent`, `new.order - context: ongoing-order`, `order.add - context: ongoing-order`, `order.remove - context: ongoing-order`, `order.complete - context: ongoing-order`, `track.order`, `track.order - context: ongoing-tracking`.
+2. Add the `food-item` custom entity (with synonyms) and use the system entity `@sys.number` for both the `number` parameter (quantities in `order.add`) and the `order_id` parameter (in `track.order - context: ongoing-tracking`).
+3. Set up all the settings for each intent, entity, and webhook exactly as described in [`docs/dialogflow-agent-summary.txt`](docs/dialogflow-agent-summary.txt) — see the clip below for how input/output contexts and other params are saved per intent.
 4. Enable webhook fulfillment for each intent and paste the ngrok URL printed when you run `main.py` into **Fulfillment → Webhook**.
 
-![Intent and context configuration](docs/screenshots/intent-context-setup.png)
-*(Example: `order.add` intent with input context `ongoing-order` and required parameters)*
+![This is how a sample intent will look like](docs/screenshots/sample-intent.gif)
+*(Example: Sample `order.add - context: ongoing-order` intent with input, output context `ongoing-order` and required parameters)*
 
 ---
 
@@ -158,10 +158,8 @@ Bot:  The order status for order id: 260710143210 is: in transit
 ---
 
 ## What I Learned
+This project was built to learn Dialogflow ES end-to-end: intents, entities, contexts, and webhook fulfillment, paired with a FastAPI backend and SQLite storage.
 
-This project was built to learn Dialogflow ES end-to-end: intents, entities, contexts, and webhook fulfillment, paired with a FastAPI backend and SQLite storage. Full study notes are in [`docs/STUDY_NOTES.md`](docs/STUDY_NOTES.md).
-
----
 
 ## License
 
