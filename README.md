@@ -51,10 +51,10 @@ quant-eatery-chatbot/
 │   └── db_helper.py       # DB read/write helpers
 ├── utils/
 │   └── helper.py          # session ID extraction, formatting helpers
-├── frontend/               # website + chat widget embed
+├── frontend/              # website + chat widget embed
 ├── scripts/
 │   └── view_db.py         # dev utility to inspect DB contents
-├── docs/                   # demo gif, diagrams
+├── docs/                  # demo gif, diagrams
 ├── .env.example
 └── requirements.txt
 ```
