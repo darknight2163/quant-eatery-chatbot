@@ -21,21 +21,7 @@ Quicky is a conversational food-ordering assistant for a fictional restaurant, *
 
 ## Architecture
 
-```
-[Website (HTML/CSS/JS)]
-        |  iframe embed
-        v
-[Dialogflow ES Agent]   ← intent + entity recognition (NLU)
-        |  HTTPS webhook (via ngrok in dev)
-        v
-[FastAPI Backend]       ← session state: in-progress orders
-        |
-        v
-[SQLite Database]
-  - food_items
-  - orders
-  - order_tracking
-```
+![Architecture](docs/architecture.svg)
 
 **Why Dialogflow ES over Rasa/a raw LLM?** This is a structured-action problem (order food, track order), not an open-ended generation problem, Dialogflow's intent/entity model plus built-in hosting and integrations got this to a working demo faster than self-hosting an NLU pipeline or wiring up an LLM for something it isn't needed for.
 
